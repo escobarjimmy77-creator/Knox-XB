@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <title>AnimeSAO Pro</title>
+    <link rel="manifest" href="manifest.json" />
+    <meta name="theme-color" content="#000000" />
+    <link rel="apple-touch-icon" href="icon-192.png" />
+    <link rel="stylesheet" href="/style.css?v=56" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body>
+    <main id="app-container">
+        
+        <section id="view-home" class="view active">
+            <div class="content-scrollable" id="home-scroll">
+                <div id="home-toolbar" class="home-toolbar" aria-label="Filtros rápidos del inicio">
+                    <button class="home-chip active" data-home-filter="recommended">Para ti</button>
+                    <button class="home-chip" data-home-filter="latest">Nuevos</button>
+                    <button class="home-chip" data-home-filter="trending">Populares</button>
+                    <button class="home-chip" data-home-filter="action">Acción</button>
+                    <button class="home-chip" data-home-filter="comedy">Comedia</button>
+                    <button class="home-chip" data-home-filter="romance">Romance</button>
+                </div>
+                <div id="recommendations-container" class="home-personalized-container"></div>
+                <div id="continue-watching-container" class="continue-watching-section"></div>
+                <div id="home-content"></div>
+                <div id="home-loader" class="loader-modern">
+                    <div class="loader-spinner"></div>
+                    <p>Cargando catálogo...</p>
+                </div>
+                <div id="home-sentinel" class="sentinel" style="height: 1px; width: 100%;"></div>
+            </div>
+        </section>
+
+        <section id="view-category" class="view">
+            <header class="top-bar premium category-header">
+                <button class="btn-icon-nav btn-back" id="btn-back-category">
+                    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 19l-7-7 7-7"></path></svg>
+                </button>
+                <h2 id="category-title" class="category-title">Categoría</h2>
+                <div style="width:24px"></div>
+            </header>
+            <div class="content-scrollable" id="category-scroll">
+                <div class="grid" id="category-grid"></div>
+                <div id="category-loader" class="loader-modern">
+                    <div class="loader-spinner"></div>
+                </div>
+                <div id="category-sentinel" class="sentinel" style="height: 1px; width: 100%;"></div>
+            </div>
+        </section>
+
+        <section id="view-search" class="view">
+            <header class="top-bar premium search-header">
+                <div class="search-wrapper-header">
+                    <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2.5" fill="none"><circle cx="11" cy="11" r="8"></circle><path d="M21 21l-4.35-4.35"></path></svg>
+                    <input type="text" id="search-input" placeholder="Buscar anime..." autocomplete="off">
+                    <button id="search-clear" class="btn-search-clear hidden">
+                        <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                    </button>
+                    <div id="search-suggestions" class="search-suggestions hidden"></div>
+                </div>
+            </header>
+            <div class="content-scrollable" id="search-scroll">
+                <div id="search-message" class="empty-state-premium">
+                    <svg viewBox="0 0 24 24" width="48" height="48" stroke="currentColor" stroke-width="1.5" fill="none" style="opacity:0.5"><circle cx="11" cy="11" r="8"></circle><path d="M21 21l-4.35-4.35"></path></svg>
+                    <p>Busca tu anime favorito</p>
+
+                    <div class="discover-genres-title">Descubre por género</div>
+                    <div id="discover-genres" class="discover-genres"></div>
+                </div>
+                <div class="grid" id="search-grid"></div>
+                <div id="search-loader" class="loader-modern hidden">
+                    <div class="loader-spinner"></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="view-library" class="view">
+            <header class="top-bar premium library-header">
+                <h2 class="library-title">Mi Biblioteca</h2>
+            </header>
+            <div class="content-scrollable">
+                <div class="grid" id="library-grid"></div>
+                <div id="library-empty" class="empty-state-premium">
+                    <svg viewBox="0 0 24 24" width="48" height="48" stroke="currentColor" stroke-width="1.5" fill="none" style="opacity:0.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                    <p>Tu biblioteca está vacía</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="view-ai" class="view">
+            <header class="top-bar premium ai-header">
+                <h2 class="ai-title">Asistente AI</h2>
+                <div class="ai-status" id="ai-status-indicator">
+                    <div class="status-dot"></div>
+                    <span id="ai-status-text">Gemini Offline</span>
+                </div>
+            </header>
+            <div class="content-scrollable" id="ai-chat-scroll">
+                <div id="ai-chat-container" class="ai-chat-container">
+                    <div class="ai-welcome-card">
+                        <div class="ai-icon-large">
+                            <svg viewBox="0 0 24 24" width="48" height="48" stroke="white" stroke-width="1.5" fill="none"><rect x="3" y="11" width="18" height="10" rx="2"></rect><circle cx="12" cy="5" r="2"></circle><path d="M12 7v4"></path><line x1="8" y1="16" x2="8" y2="16"></line><line x1="16" y1="16" x2="16" y2="16"></line></svg>
+                        </div>
+                        <h3>¡Hola! Soy tu asistente de Anime</h3>
+                        <p>Dime qué animes te gustan y te recomendaré algo nuevo. Si encuentro lo que buscas, ¡lo abriré automáticamente por ti!</p>
+                        <div class="ai-suggestions-grid">
+                            <button class="ai-suggestion-chip">Recomiéndame un Isekai</button>
+                            <button class="ai-suggestion-chip">Animes parecidos a Naruto</button>
+                            <button class="ai-suggestion-chip">¿Qué ver de romance?</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="ai-input-area">
+                <div class="ai-input-wrapper">
+                    <textarea id="ai-input" placeholder="Pregúntame algo..." rows="1"></textarea>
+                    <button id="ai-send" class="btn-ai-send">
+                        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2.5" fill="none"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <section id="view-settings" class="view">
+            <header class="top-bar premium settings-header">
+                <h2 class="settings-title">Configuración</h2>
+            </header>
+            <div class="content-scrollable">
+                <div class="settings-list">
+                    <div class="setting-item" id="btn-install-app" style="display: none; background: var(--accent-primary); color: white;">
+                        <div class="setting-content">
+                            <span class="setting-label">Instalar Aplicación</span>
+                            <span class="setting-desc" style="color: rgba(255,255,255,0.8);">Añadir a pantalla de inicio</span>
+                        </div>
+                        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                    </div>
+                    <div class="setting-item" id="btn-clear-cache">
+                        <div class="setting-content">
+                            <span class="setting-label">Limpiar Datos Locales</span>
+                            <span class="setting-desc">Elimina biblioteca e historial</span>
+                        </div>
+                        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                    </div>
+                    <div class="setting-group-title">Inteligencia Artificial</div>
+                    <div class="setting-item-block">
+                        <div class="setting-content">
+                            <span class="setting-label">Gemini API Key</span>
+                            <span class="setting-desc">Usada para recomendaciones inteligentes</span>
+                        </div>
+                        <div class="key-input-wrapper">
+                            <input type="password" id="gemini-api-key" placeholder="Pega tu API Key aquí..." autocomplete="off">
+                            <button id="btn-save-key" class="btn-save-mini">Guardar</button>
+                        </div>
+                    </div>
+                    <div class="setting-info">
+                        <strong>AnimeSAO Pro v58</strong><br>
+                        <span>3.16.0 | Enterprise Diamond</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div id="overlay-detail" class="overlay">
+        <button class="btn-close-overlay" id="btn-close-detail">
+            <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2.5" fill="none"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="12" x2="18" y2="12"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+        <div class="detail-backdrop-fixed" id="detail-backdrop-fixed"></div>
+        <div class="detail-scroll-container">
+            <div class="detail-content-premium">
+                <div class="detail-loading" id="detail-loading">
+                    <div class="skeleton-cover"></div>
+                    <div class="skeleton-pulse" style="height: 24px; margin: 16px 0;"></div>
+                    <div class="skeleton-pulse" style="width: 60%; height: 16px;"></div>
+                </div>
+                <div id="detail-loaded" style="display: none;">
+                    <div class="detail-top-info">
+                        <div class="detail-cover-container">
+                            <img id="detail-cover" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="Cover" class="detail-cover">
+                        </div>
+                    </div>
+                    <div class="detail-meta-actions">
+                        <span id="detail-status" class="badge-status">Status</span>
+                        <button id="btn-library" class="btn-library-toggle">
+                            <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+                        </button>
+                    </div>
+                    <div id="detail-genres" class="detail-genres-grid"></div>
+                    <h1 id="detail-title" class="detail-title">Cargando...</h1>
+                    <p id="detail-synopsis" class="detail-synopsis"></p>
+                    <div class="episodes-section">
+                        <div class="episodes-header">
+                            <h3>Episodios</h3>
+                            <div class="ep-controls">
+                                <span class="ep-count" id="detail-ep-count">0</span>
+                                <button class="btn-sort-ep" id="btn-sort-ep" title="Cambiar orden">
+                                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="7 15 12 20 17 15"></polyline><polyline points="7 9 12 4 17 9"></polyline></svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div id="ep-ranges-container" class="ep-ranges-container"></div>
+                        <div id="detail-episodes" class="episodes-list-grid"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="overlay-player" class="overlay player-overlay">
+        <div class="player-header premium">
+            <button class="btn-icon-nav btn-back" id="btn-close-player">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 19l-7-7 7-7"></path></svg>
+            </button>
+            <div class="player-title-container">
+                <div id="player-title" class="player-title">Episodio</div>
+                <div id="player-episode-info" class="player-episode-info"></div>
+            </div>
+            <button class="btn-icon-nav" id="btn-fullscreen-player" style="margin-right: 10px;">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+            </button>
+        </div>
+        <div class="player-container-wrapper">
+            <div class="player-container" id="player-container">
+                <div id="player-loader" class="loader-modern-center">
+                    <div class="loader-spinner-large"></div>
+                    <p>Obteniendo video...</p>
+                </div>
+                <div class="player-error hidden" id="player-error">
+                    <div style="text-align: center;">
+                        <svg viewBox="0 0 24 24" width="48" height="48" stroke="currentColor" stroke-width="1.5" fill="none" style="opacity:0.6; margin: 0 auto 16px;"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                        <div class="error-message" style="font-size: 16px; color: #ff6b6b;"></div>
+                    </div>
+                    <button id="btn-retry" class="btn-retry-modern">Reintentar</button>
+                </div>
+                <iframe id="player-iframe" src="" allow="autoplay; fullscreen; picture-in-picture; encrypted-media" allowfullscreen frameborder="0" style="width: 100%; height: 100%; position: absolute; top: 0; left: 0;"></iframe>
+            </div>
+        </div>
+        <div class="player-controls-advanced">
+            <div class="server-controls">
+                <label class="server-label">Servidor:</label>
+                <select id="server-selector" class="server-select-modern"></select>
+            </div>
+            <div class="ep-nav-modern">
+                <button id="btn-prev-ep" class="btn-nav-modern">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 19l-7-7 7-7"></path></svg>
+                    <span>Anterior</span>
+                </button>
+                <button id="btn-next-ep" class="btn-nav-modern">
+                    <span>Siguiente</span>
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 5l7 7-7 7"></path></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <nav class="bottom-nav-premium">
+        <button class="nav-item-premium active" data-target="view-home">
+            <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+        </button>
+        <button class="nav-item-premium" data-target="view-search">
+            <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        </button>
+        <button class="nav-item-premium ai-nav-btn" data-target="view-ai">
+            <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none"><rect x="3" y="11" width="18" height="10" rx="2"></rect><circle cx="12" cy="5" r="2"></circle><path d="M12 7v4"></path><path d="M8 16h0"></path><path d="M16 16h0"></path></svg>
+        </button>
+        <button class="nav-item-premium" data-target="view-library">
+            <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+        </button>
+        <button class="nav-item-premium" data-target="view-settings">
+            <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+        </button>
+    </nav>
+
+    <div id="toast" class="toast-premium"></div>
+    
+    <script type="module" src="/script.js?v=58"></script>
+</body>
+</html>
